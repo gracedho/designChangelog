@@ -1,0 +1,1681 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap');
+
+/* ── Design tokens ─────────────────────────────── */
+:root {
+  --purple:        #5E4FD6;
+  --purple-hover:  #4A3DBF;
+  --purple-light:  #EEF0FD;
+  --purple-mid:    #C4BEF5;
+  --purple-text:   #3A2FA8;
+
+  --bg:            #FFFFFF;
+  --bg-subtle:     #F7F7F8;
+  --bg-hover:      #F2F2F4;
+  --bg-active:     #EEEEF2;
+
+  --border:        #E5E5E8;
+  --border-strong: #D0D0D5;
+
+  --text:          #1A1A1F;
+  --text-2:        #4F4F5A;
+  --text-3:        #8A8A98;
+  --text-4:        #B0B0BE;
+
+  --radius-sm:     4px;
+  --radius-md:     6px;
+  --radius-lg:     8px;
+  --radius-xl:     10px;
+
+  --shadow-sm:     0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md:     0 4px 16px rgba(0,0,0,0.10), 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-lg:     0 8px 32px rgba(0,0,0,0.14), 0 2px 6px rgba(0,0,0,0.06);
+}
+
+/* ── Reset & base ──────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-font-smoothing: antialiased; background: #F7F7F8; min-height: 100vh; }
+
+/* ── App shell ─────────────────────────────────── */
+.app { padding: 28px 32px 48px; max-width: 760px; margin: 0 auto; font-family: 'Geist', sans-serif; background: #FFFFFF; min-height: 100vh; box-shadow: 0 0 0 1px #E5E5E8; }
+
+/* ── Top bar ───────────────────────────────────── */
+.topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; gap: 12px; }
+.topbar-left { display: flex; align-items: center; gap: 10px; }
+.topbar-logo { width: 28px; height: 28px; background: var(--purple); border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.topbar-logo svg { width: 14px; height: 14px; }
+.topbar-left h1 { font-size: 15px; font-weight: 600; color: var(--text); letter-spacing: -0.2px; }
+.topbar-left p { font-size: 12.5px; color: var(--text-3); margin-top: 1px; }
+.topbar-text { display: flex; flex-direction: column; }
+.topbar-right { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+
+/* ── Buttons ───────────────────────────────────── */
+.btn {
+  font-family: 'Geist', sans-serif;
+  font-size: 13px; font-weight: 500;
+  padding: 6px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  background: var(--bg);
+  color: var(--text-2);
+  transition: background 0.12s, border-color 0.12s, color 0.12s, box-shadow 0.12s;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+.btn:hover { background: var(--bg-hover); border-color: var(--border-strong); color: var(--text); }
+.btn:active { background: var(--bg-active); }
+
+.btn.primary {
+  background: var(--text); color: #fff; border-color: var(--text);
+}
+.btn.primary:hover { background: #2d2d35; border-color: #2d2d35; }
+
+.btn.accent {
+  background: var(--purple); color: #fff; border-color: var(--purple);
+  font-size: 13px; padding: 7px 14px;
+  box-shadow: 0 1px 3px rgba(94,79,214,0.25);
+}
+.btn.accent:hover { background: var(--purple-hover); border-color: var(--purple-hover); box-shadow: 0 2px 6px rgba(94,79,214,0.30); }
+
+.btn.danger { color: #C0392B; border-color: #F5C6C2; background: #fff; }
+.btn.danger:hover { background: #FEF2F1; border-color: #F0A09A; }
+
+.btn.sm { font-size: 12px; padding: 4px 9px; }
+
+.btn.ghost { border-color: transparent; background: transparent; color: var(--text-3); box-shadow: none; }
+.btn.ghost:hover { background: var(--bg-hover); border-color: transparent; color: var(--text-2); }
+
+/* ── Project bar ───────────────────────────────── */
+.project-bar {
+  display: flex; gap: 8px; align-items: center;
+  margin-bottom: 20px; padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.project-bar label { font-size: 12px; font-weight: 500; color: var(--text-3); white-space: nowrap; letter-spacing: 0.02em; }
+.project-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+/* ── Projects selector ─────────────────────────── */
+.project-selector-wrap {
+  flex: 1; position: relative;
+}
+.project-selector-btn {
+  display: flex; align-items: center; gap: 8px;
+  width: 100%; padding: 7px 10px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  cursor: pointer;
+  font-family: 'Geist', sans-serif;
+  font-size: 13.5px; color: var(--text);
+  transition: border-color 0.12s;
+  text-align: left;
+}
+.project-selector-btn:hover { border-color: var(--border-strong); }
+.project-selector-btn .project-dot {
+  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+}
+.project-selector-btn .project-name { flex: 1; }
+.project-selector-btn .chevron { color: var(--text-4); flex-shrink: 0; }
+
+/* ── Form elements ─────────────────────────────── */
+input, textarea, select {
+  font-family: 'Geist', sans-serif;
+  font-size: 13.5px; padding: 7px 10px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  width: 100%;
+  transition: border-color 0.12s, box-shadow 0.12s;
+}
+input::placeholder, textarea::placeholder { color: var(--text-4); }
+textarea { resize: vertical; line-height: 1.6; min-height: 68px; }
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--purple);
+  box-shadow: 0 0 0 3px rgba(94,79,214,0.12);
+}
+select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%238A8A98' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 9px center; padding-right: 28px; }
+
+/* ── Summary stats ─────────────────────────────── */
+.summary-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; margin-bottom: 16px; }
+.stat-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 12px 14px;
+  transition: border-color 0.12s;
+}
+.stat-card:hover { border-color: var(--border-strong); }
+.stat-label { font-size: 11px; font-weight: 500; color: var(--text-3); margin-bottom: 4px; letter-spacing: 0.02em; }
+.stat-value { font-size: 22px; font-weight: 600; color: var(--text); letter-spacing: -0.5px; }
+.stat-sub { font-size: 11px; color: var(--text-4); margin-top: 2px; }
+
+.progress-bar-wrap { margin-bottom: 20px; }
+.progress-bar-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-3); margin-bottom: 7px; font-weight: 500; }
+.progress-track { height: 5px; background: var(--bg-subtle); border-radius: 100px; overflow: hidden; border: 1px solid var(--border); }
+.progress-fill { height: 100%; background: var(--purple); border-radius: 100px; transition: width 0.4s ease; }
+
+/* ── Search & filters ──────────────────────────── */
+.search-filter-bar { display: flex; gap: 6px; margin-bottom: 12px; align-items: center; flex-wrap: wrap; }
+.search-wrap { position: relative; flex: 1; min-width: 140px; }
+.search-wrap input { padding-left: 30px; }
+.search-icon { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); color: var(--text-4); pointer-events: none; display: flex; }
+select.filter { width: auto; font-size: 12.5px; padding: 6px 28px 6px 10px; color: var(--text-2); }
+
+/* ── Color coding toggle ───────────────────────── */
+.color-code-toggle {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; color: var(--text-3); font-weight: 500;
+  padding: 5px 9px; border-radius: var(--radius-md);
+  border: 1px solid var(--border); cursor: pointer;
+  user-select: none; background: var(--bg);
+  transition: all 0.12s;
+  white-space: nowrap;
+}
+.color-code-toggle:hover { border-color: var(--border-strong); color: var(--text-2); }
+.color-code-toggle.active { border-color: var(--purple-mid); background: var(--purple-light); color: var(--purple-text); }
+.color-code-toggle .toggle-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border-strong); transition: background 0.12s; }
+.color-code-toggle.active .toggle-dot { background: var(--purple); }
+
+/* ── Decisions meta row ────────────────────────── */
+.decisions-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.decisions-meta span { font-size: 12px; color: var(--text-3); font-weight: 500; }
+
+/* ── Group header ──────────────────────────────── */
+.project-group-header {
+  font-size: 11.5px; font-weight: 600; color: var(--text-3);
+  padding: 4px 0 8px; margin-top: 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 10px;
+  display: flex; align-items: center; justify-content: space-between;
+  letter-spacing: 0.03em; text-transform: uppercase;
+}
+.project-group-header:first-child { margin-top: 0; }
+.project-group-count { font-size: 11px; color: var(--text-4); font-weight: 400; text-transform: none; letter-spacing: 0; }
+.group-header-left { display: flex; align-items: center; gap: 8px; }
+.group-color-swatch { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+
+/* ── Decision card ─────────────────────────────── */
+.decision-item {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  margin-bottom: 8px;
+  transition: border-color 0.12s, box-shadow 0.12s;
+  position: relative;
+  overflow: hidden;
+}
+.decision-item:hover { border-color: var(--border-strong); box-shadow: var(--shadow-sm); }
+.decision-item .project-color-strip {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+}
+
+.di-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 6px; }
+.di-title { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.45; letter-spacing: -0.1px; }
+.di-badges { display: flex; gap: 4px; align-items: center; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
+
+.badge { font-size: 11px; font-weight: 500; padding: 2px 7px; border-radius: 4px; }
+.badge.ux         { background: #EEECFD; color: #4A3DBF; }
+.badge.visual     { background: #E4F5EE; color: #1A6B4A; }
+.badge.interaction{ background: #FEF0E8; color: #8A3A10; }
+.badge.copy       { background: #FEF5E4; color: #7A4A08; }
+.badge.layout     { background: #E8F2FD; color: #1A5299; }
+.badge.other      { background: var(--bg-subtle); color: var(--text-3); border: 1px solid var(--border); }
+
+.impact-dot { font-size: 11px; font-weight: 500; padding: 2px 7px; border-radius: 4px; }
+.impact-dot.i1 { background:#ECF5E2; color:#2E6010; }
+.impact-dot.i2 { background:#FEF5E4; color:#7A4A08; }
+.impact-dot.i3 { background:#FEF0E8; color:#8A3A10; }
+.impact-dot.i4 { background:#FDECEC; color:#A02020; }
+.impact-dot.i5 { background:#E24B4A; color:#fff; }
+
+/* ── Project pill on card ──────────────────────── */
+.di-project-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 500;
+  padding: 2px 8px; border-radius: 100px;
+  background: var(--bg-subtle); color: var(--text-3);
+  border: 1px solid var(--border);
+  margin-bottom: 6px;
+}
+.di-project-pill .pill-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+.di-row { font-size: 13px; color: var(--text-2); line-height: 1.55; margin-bottom: 4px; }
+.di-row strong { font-weight: 500; color: var(--text-3); font-size: 11.5px; margin-right: 2px; }
+
+.di-teams { display: flex; flex-wrap: wrap; gap: 4px; margin: 7px 0 2px; }
+.di-team-pill { font-size: 11px; padding: 2px 8px; border-radius: 100px; background: var(--bg-subtle); color: var(--text-3); border: 1px solid var(--border); }
+
+.di-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 11px; padding-top: 11px; border-top: 1px solid var(--border); flex-wrap: wrap; gap: 6px; }
+.di-date { font-size: 11px; color: var(--text-4); }
+.di-footer-right { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; }
+
+.client-check {
+  display: flex; align-items: center; gap: 5px; cursor: pointer;
+  font-size: 12px; color: var(--text-3);
+  padding: 3px 8px; border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  transition: all 0.12s;
+}
+.client-check:hover { background: var(--bg-hover); border-color: var(--border); color: var(--text-2); }
+.client-check.informed { color: #1A6B4A; background: #E8F7EF; border-color: #A8DEC0; }
+.checkmark { width: 14px; height: 14px; border-radius: 3px; border: 1.5px solid var(--border-strong); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 9px; transition: all 0.12s; }
+.client-check.informed .checkmark { background: #1A9154; border-color: #1A9154; color: #fff; }
+
+/* ── Collapsible detail rows ───────────────────── */
+.di-detail-toggle {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11.5px; color: var(--text-4); cursor: pointer;
+  margin-top: 5px; padding: 2px 0;
+  border: none; background: none; font-family: 'Geist', sans-serif;
+  transition: color 0.1s;
+}
+.di-detail-toggle:hover { color: var(--purple); }
+.di-detail-toggle svg { transition: transform 0.2s; }
+.di-detail-toggle.open svg { transform: rotate(180deg); }
+.di-details { display: none; margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--border); }
+.di-details.open { display: block; }
+
+/* ── Empty state ───────────────────────────────── */
+.empty { text-align: center; padding: 48px 24px; color: var(--text-3); font-size: 13.5px; border: 1px dashed var(--border); border-radius: var(--radius-xl); background: var(--bg-subtle); }
+.empty-cta { margin-top: 14px; }
+
+/* ── Export bar ────────────────────────────────── */
+.export-bar { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); display: flex; gap: 8px; justify-content: flex-end; }
+
+/* ── Modal ─────────────────────────────────────── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(10,10,20,0.40);
+  backdrop-filter: blur(2px);
+  z-index: 100; align-items: flex-start; justify-content: center;
+  padding: 40px 16px 40px; overflow-y: auto;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: #FFFFFF;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  width: 100%; max-width: 544px;
+  display: flex; flex-direction: column;
+  max-height: calc(100vh - 96px);
+}
+.modal-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0; background: #FFFFFF;
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+.modal-header h2 { font-size: 14.5px; font-weight: 600; color: var(--text); letter-spacing: -0.1px; }
+.modal-close {
+  background: none; border: none; cursor: pointer;
+  width: 28px; height: 28px; border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-3); font-size: 16px; font-family: 'Geist', sans-serif;
+  transition: background 0.1s, color 0.1s;
+}
+.modal-close:hover { background: var(--bg-hover); color: var(--text); }
+.modal-body { overflow-y: auto; padding: 20px; flex: 1; background: #FFFFFF; }
+.modal-footer {
+  padding: 14px 20px; border-top: 1px solid var(--border);
+  display: flex; justify-content: flex-end; gap: 8px; flex-shrink: 0;
+  background: #FFFFFF;
+  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+}
+
+.modal-section { margin-bottom: 20px; }
+.modal-section:last-child { margin-bottom: 0; }
+.modal-section-label {
+  font-size: 11px; font-weight: 600; color: var(--text-3);
+  letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px;
+}
+
+.field { margin-bottom: 12px; }
+.field:last-child { margin-bottom: 0; }
+.field > label { font-size: 12.5px; font-weight: 500; color: var(--text-2); display: block; margin-bottom: 5px; }
+.hint { font-size: 11.5px; color: var(--text-4); margin-top: 4px; line-height: 1.4; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* ── Project dropdown in modal ─────────────────── */
+.project-dropdown-wrap { position: relative; }
+.project-dropdown-btn {
+  display: flex; align-items: center; gap: 8px;
+  width: 100%; padding: 7px 10px;
+  border-radius: var(--radius-md); border: 1px solid var(--border);
+  background: var(--bg); cursor: pointer;
+  font-family: 'Geist', sans-serif; font-size: 13.5px; color: var(--text);
+  transition: border-color 0.12s, box-shadow 0.12s;
+  text-align: left;
+}
+.project-dropdown-btn:hover { border-color: var(--border-strong); }
+.project-dropdown-btn:focus { outline: none; border-color: var(--purple); box-shadow: 0 0 0 3px rgba(94,79,214,0.12); }
+.project-dropdown-btn .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.project-dropdown-btn .label { flex: 1; }
+.project-dropdown-btn .chevron-icon { color: var(--text-4); }
+
+.project-dropdown-menu {
+  display: none; position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-md);
+  z-index: 200; overflow: hidden;
+}
+.project-dropdown-menu.open { display: block; }
+.project-dropdown-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px; cursor: pointer; font-size: 13px; color: var(--text);
+  transition: background 0.1s;
+}
+.project-dropdown-item:hover { background: var(--bg-hover); }
+.project-dropdown-item.active { background: var(--purple-light); color: var(--purple-text); }
+.project-dropdown-item .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.project-dropdown-divider { height: 1px; background: var(--border); margin: 4px 0; }
+.project-dropdown-create {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px; cursor: pointer; font-size: 13px; color: var(--purple-text);
+  font-weight: 500; transition: background 0.1s;
+}
+.project-dropdown-create:hover { background: var(--purple-light); }
+
+/* ── Color picker ──────────────────────────────── */
+.color-picker-row {
+  display: flex; gap: 6px; align-items: center; flex-wrap: wrap;
+  margin-top: 8px;
+}
+.color-swatch {
+  width: 22px; height: 22px; border-radius: 50%; cursor: pointer;
+  border: 2px solid transparent; transition: transform 0.1s, border-color 0.1s;
+  flex-shrink: 0;
+}
+.color-swatch:hover { transform: scale(1.15); }
+.color-swatch.selected { border-color: var(--text); transform: scale(1.1); }
+
+/* ── Impact pips ───────────────────────────────── */
+.impact-row { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.impact-pip {
+  width: 34px; height: 34px; border-radius: var(--radius-md);
+  border: 1px solid var(--border); background: var(--bg-subtle);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 500; color: var(--text-3);
+  transition: all 0.1s;
+}
+.impact-pip:hover { border-color: var(--purple-mid); background: var(--purple-light); color: var(--purple-text); }
+.impact-pip.sel-1 { background:#ECF5E2; color:#2E6010; border-color:#B8DFA0; }
+.impact-pip.sel-2 { background:#FEF5E4; color:#7A4A08; border-color:#F5D49A; }
+.impact-pip.sel-3 { background:#FEF0E8; color:#8A3A10; border-color:#F5C6A8; }
+.impact-pip.sel-4 { background:#FDECEC; color:#A02020; border-color:#F0ADAD; }
+.impact-pip.sel-5 { background:#E24B4A; color:#fff; border-color:#C43938; }
+.impact-label { font-size: 12px; color: var(--text-3); margin-left: 4px; }
+
+/* ── Team pills ────────────────────────────────── */
+.pills-row { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 6px; }
+.pill {
+  font-size: 12px; font-weight: 500; padding: 4px 11px;
+  border-radius: 100px; border: 1px solid var(--border);
+  cursor: pointer; background: var(--bg-subtle); color: var(--text-3);
+  user-select: none; transition: all 0.1s;
+}
+.pill:hover { border-color: var(--purple-mid); color: var(--purple-text); background: var(--purple-light); }
+.pill.active           { background: var(--purple-light); color: var(--purple-text); border-color: var(--purple-mid); }
+.pill.active.eng       { background:#EAF3FD; color:#1A5299; border-color:#96C0EE; }
+.pill.active.prod      { background:#E4F5EE; color:#1A6B4A; border-color:#86D4AC; }
+.pill.active.sales     { background:#FEF5E4; color:#7A4A08; border-color:#F5D49A; }
+.pill.active.legal     { background:#FDECEC; color:#A02020; border-color:#F0ADAD; }
+.pill.active.mkt       { background:#FDE8F2; color:#882255; border-color:#F0A8CE; }
+.pill.active.content   { background: var(--purple-light); color: var(--purple-text); border-color: var(--purple-mid); }
+
+/* ── Settings ──────────────────────────────────── */
+.add-team-row { display: flex; gap: 6px; margin-top: 10px; }
+.add-team-row input { flex: 1; font-size: 13px; padding: 6px 10px; }
+
+.settings-toggle { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); gap: 12px; }
+.settings-toggle:last-child { border-bottom: none; }
+.settings-toggle label { font-size: 13.5px; font-weight: 500; color: var(--text); }
+.settings-toggle .sub { font-size: 12px; color: var(--text-3); margin-top: 1px; }
+
+.toggle { position: relative; width: 36px; height: 20px; flex-shrink: 0; }
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle-track { position: absolute; inset: 0; background: var(--bg-active); border: 1px solid var(--border-strong); border-radius: 100px; cursor: pointer; transition: background 0.2s, border-color 0.2s; }
+.toggle input:checked + .toggle-track { background: var(--purple); border-color: var(--purple); }
+.toggle-thumb { position: absolute; top: 3px; left: 3px; width: 12px; height: 12px; background: #fff; border-radius: 50%; transition: transform 0.2s; pointer-events: none; box-shadow: 0 1px 2px rgba(0,0,0,0.15); }
+.toggle input:checked ~ .toggle-thumb { transform: translateX(16px); }
+
+.mode-select { display: flex; gap: 6px; margin-bottom: 4px; }
+.mode-btn {
+  flex: 1; padding: 10px; border-radius: var(--radius-md);
+  border: 1px solid var(--border); cursor: pointer;
+  background: var(--bg-subtle); text-align: center;
+  color: var(--text-3); font-size: 13px; font-family: 'Geist', sans-serif;
+  transition: all 0.12s;
+}
+.mode-btn:hover { border-color: var(--border-strong); color: var(--text-2); }
+.mode-btn.active { background: var(--bg); border-color: var(--purple); color: var(--text); font-weight: 600; box-shadow: 0 0 0 3px rgba(94,79,214,0.10); }
+.mode-icon { font-size: 18px; display: block; margin-bottom: 4px; }
+
+.team-manage-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--border); gap: 10px; }
+.team-manage-row:last-child { border-bottom: none; }
+.team-manage-left { display: flex; align-items: center; gap: 8px; flex: 1; }
+.team-name-input { font-size: 13px; padding: 4px 8px; border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--bg); color: var(--text); font-family: 'Geist', sans-serif; width: 140px; }
+.custom-tag { font-size: 10px; color: var(--text-4); background: var(--bg-subtle); border-radius: 100px; padding: 2px 7px; border: 1px solid var(--border); }
+
+/* ── Toast ─────────────────────────────────────── */
+.toast {
+  position: fixed; bottom: 24px; left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  background: var(--text); color: #fff;
+  font-family: 'Geist', sans-serif;
+  font-size: 13px; font-weight: 500; padding: 8px 16px;
+  border-radius: 100px; opacity: 0;
+  transition: opacity 0.2s, transform 0.2s;
+  pointer-events: none; z-index: 200; white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.edited-tag { font-size: 10.5px; color: var(--text-4); margin-left: 5px; }
+
+/* ── Archive modal list ────────────────────────── */
+.archive-item { padding: 13px 0; border-bottom: 1px solid var(--border); }
+.archive-item:last-child { border-bottom: none; }
+.archive-item-name { font-size: 13.5px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.archive-item-meta { font-size: 12px; color: var(--text-4); }
+.archive-item-actions { display: flex; gap: 6px; margin-top: 9px; }
+.archive-empty { text-align: center; padding: 32px 16px; color: var(--text-3); font-size: 13px; }
+
+/* ── Project manage list ───────────────────────── */
+.project-manage-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+}
+.project-manage-item:last-child { border-bottom: none; }
+.project-manage-dot { width: 14px; height: 14px; border-radius: 4px; flex-shrink: 0; cursor: pointer; position: relative; }
+.project-manage-name { flex: 1; font-size: 13.5px; font-weight: 500; color: var(--text); }
+.project-manage-count { font-size: 12px; color: var(--text-4); }
+.project-manage-actions { display: flex; gap: 4px; flex-shrink: 0; }
+.project-color-edit { position: absolute; inset: 0; opacity: 0; cursor: pointer; border-radius: inherit; }
+
+/* ── New project inline form ───────────────────── */
+.new-project-form {
+  background: var(--bg-subtle); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 14px;
+  margin-top: 12px;
+}
+.new-project-form .form-row { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
+.new-project-form .form-row:last-child { margin-bottom: 0; }
+.new-project-form input { font-size: 13px; padding: 6px 10px; }
+.color-picker-label { font-size: 12px; font-weight: 500; color: var(--text-3); margin-bottom: 8px; }
+
+/* ── Field error states ────────────────────────── */
+.field-error input, .field-error textarea, .field-error .impact-row {
+  border-color: #E24B4A !important;
+  box-shadow: 0 0 0 3px rgba(226,75,74,0.12) !important;
+}
+.field-error .impact-row {
+  border: 1px solid #E24B4A;
+  border-radius: var(--radius-md);
+  padding: 6px;
+  margin: -6px;
+}
+.error-msg {
+  font-size: 11.5px; color: #C0392B; margin-top: 5px;
+  display: flex; align-items: center; gap: 4px; font-weight: 500;
+}
+.error-msg::before { content: '!'; width: 14px; height: 14px; border-radius: 50%; background: #C0392B; color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; flex-shrink: 0; }
+.field-required::after { content: ' *'; color: #C0392B; }
+
+/* ── Archive expanded decisions ─────────────────── */
+.archive-item-decisions { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); display: none; }
+.archive-item-decisions.open { display: block; }
+.archive-decision-row { font-size: 12px; color: var(--text-2); padding: 5px 0; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: 8px; }
+.archive-decision-row:last-child { border-bottom: none; }
+.archive-decision-num { font-size: 11px; color: var(--text-4); min-width: 18px; flex-shrink: 0; margin-top: 1px; }
+.archive-toggle-decisions { font-size: 11.5px; color: var(--purple-text); cursor: pointer; margin-top: 6px; display: inline-flex; align-items: center; gap: 4px; background: none; border: none; font-family: 'Geist', sans-serif; padding: 0; }
+.archive-toggle-decisions:hover { text-decoration: underline; }
+.archive-item-header { display: flex; align-items: center; gap: 8px; }
+.archive-item-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+
+/* ── Rename input inline ─────────────────────────── */
+.project-rename-input { font-size: 13.5px; font-weight: 500; color: var(--text); background: var(--bg); border: 1px solid var(--purple); border-radius: var(--radius-md); padding: 3px 7px; font-family: 'Geist', sans-serif; width: 100%; box-shadow: 0 0 0 3px rgba(94,79,214,0.12); }
+.project-rename-input:focus { outline: none; }
+
+/* ── Delete warning modal ────────────────────────── */
+.warning-modal { max-width: 400px; }
+.warning-icon { width: 40px; height: 40px; border-radius: 10px; background: #FEF2F1; border: 1px solid #F5C6C2; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; font-size: 18px; }
+.warning-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.warning-body { font-size: 13px; color: var(--text-2); line-height: 1.55; margin-bottom: 16px; }
+.warning-actions { display: flex; flex-direction: column; gap: 8px; }
+.warning-actions .btn { text-align: center; justify-content: center; }
+</style>
+
+<div class="app">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-logo">
+        <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 3.5h10M2 7h6M2 10.5h8" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="topbar-text">
+        <h1>Decision log</h1>
+        <p>Capture what you decided, why, and who needs to know.</p>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="btn sm ghost" onclick="openSettings()">Customize</button>
+      <button class="btn sm ghost" onclick="openArchiveModal()">Archive</button>
+      <button class="btn sm ghost" onclick="openManageProjects()">Projects</button>
+      <button class="btn accent" onclick="openNewDecision()">+ New decision</button>
+    </div>
+  </div>
+
+  <div id="summary-section"></div>
+
+  <div class="search-filter-bar">
+    <div class="search-wrap">
+      <span class="search-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4" stroke="#B0B0BE" stroke-width="1.4"/><path d="M9.5 9.5L12 12" stroke="#B0B0BE" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+      <input type="text" id="search-input" placeholder="Search decisions..." oninput="renderList()" />
+    </div>
+    <select class="filter" id="filter-sort" onchange="renderList()">
+      <option value="project" selected>By project</option>
+      <option value="newest">Newest first</option>
+      <option value="oldest">Oldest first</option>
+      <option value="impact-high">Highest impact</option>
+      <option value="impact-low">Lowest impact</option>
+    </select>
+    <select class="filter" id="filter-informed" onchange="renderList()">
+      <option value="all">All</option>
+      <option value="yes">Client informed</option>
+      <option value="no">Not informed</option>
+    </select>
+    <div class="color-code-toggle" id="color-code-toggle" onclick="toggleColorCoding()">
+      <div class="toggle-dot"></div>
+      Color by project
+    </div>
+  </div>
+
+  <div class="decisions-meta">
+    <span id="decision-count-label">No decisions yet</span>
+    <button class="btn sm" onclick="sendPrompt('Can you write a polished rationale summary for my design decisions so I can share it with a client?')">Summarize for client ↗</button>
+  </div>
+
+  <div id="decisions-list"></div>
+
+  <div id="export-bar" style="display:none;" class="export-bar">
+    <button class="btn" onclick="copyMarkdown()">Copy as markdown</button>
+    <button class="btn primary" onclick="exportDoc()">Export rationale doc</button>
+  </div>
+</div>
+
+<!-- New / Edit decision modal -->
+<div class="modal-overlay" id="decision-modal" onclick="decisionOverlayClick(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="decision-modal-title">New decision</h2>
+      <button class="modal-close" onclick="closeDecisionModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <!-- Project selector -->
+      <div class="modal-section">
+        <div class="modal-section-label">Project</div>
+        <div class="field">
+          <label>Which project is this for?</label>
+          <div class="project-dropdown-wrap" id="proj-dropdown-wrap">
+            <button type="button" class="project-dropdown-btn" id="proj-dropdown-btn" onclick="toggleProjDropdown()">
+              <span class="dot" id="proj-btn-dot" style="background:#B0B0BE;"></span>
+              <span class="label" id="proj-btn-label">Select a project</span>
+              <svg class="chevron-icon" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="project-dropdown-menu" id="proj-dropdown-menu"></div>
+          </div>
+        </div>
+        <!-- Inline new project form (shown when creating from modal) -->
+        <div id="inline-new-project-form" style="display:none;" class="new-project-form">
+          <div class="field">
+            <label style="font-size:12px;">Project name</label>
+            <input type="text" id="inline-proj-name" placeholder="e.g. Mobile App Redesign" style="margin-bottom:10px;" />
+          </div>
+          <div class="color-picker-label">Color (optional)</div>
+          <div class="color-picker-row" id="inline-color-picker"></div>
+          <div style="display:flex;gap:6px;margin-top:12px;">
+            <button class="btn sm" onclick="cancelInlineNewProject()">Cancel</button>
+            <button class="btn sm accent" onclick="createInlineProject()">Create project</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-label">The decision</div>
+        <div class="field" id="err-field-decision">
+          <label class="field-required">What did you decide?</label>
+          <input type="text" id="f-decision" placeholder="e.g. Use a card-based layout for the dashboard" oninput="clearFieldError('err-field-decision')" />
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label>Category</label>
+            <select id="f-category">
+              <option value="ux">UX</option>
+              <option value="visual">Visual</option>
+              <option value="layout">Layout</option>
+              <option value="interaction">Interaction</option>
+              <option value="copy">Copy</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="field" id="field-audience">
+            <label>Audience</label>
+            <input type="text" id="f-audience" placeholder="e.g. First-time users" />
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-section" id="field-impact-section">
+        <div class="modal-section-label">Impact</div>
+        <div class="field" id="err-field-impact">
+          <label class="field-required">How impactful is this decision?</label>
+          <div class="impact-row">
+            <div class="impact-pip" id="ip1" onclick="setImpact(1)">1</div>
+            <div class="impact-pip" id="ip2" onclick="setImpact(2)">2</div>
+            <div class="impact-pip" id="ip3" onclick="setImpact(3)">3</div>
+            <div class="impact-pip" id="ip4" onclick="setImpact(4)">4</div>
+            <div class="impact-pip" id="ip5" onclick="setImpact(5)">5</div>
+            <span class="impact-label" id="impact-label">Select a level</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-section" id="field-teams-section">
+        <div class="modal-section-label">Teams to loop in</div>
+        <div class="field">
+          <label>Who needs to know about this?</label>
+          <div class="pills-row" id="team-pills-form"></div>
+          <div class="hint">Select all that apply</div>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-label">Rationale</div>
+        <div class="field" id="err-field-why">
+          <label class="field-required">Why this decision?</label>
+          <textarea id="f-why" placeholder="What problem are you solving? What need does this serve?" oninput="clearFieldError('err-field-why')"></textarea>
+        </div>
+        <div class="field" id="field-alts">
+          <label>Alternatives considered</label>
+          <textarea id="f-alts" placeholder="What else did you try or consider?" style="min-height:54px;"></textarea>
+        </div>
+        <div class="field" id="field-tradeoff">
+          <label>Tradeoff or open question</label>
+          <textarea id="f-tradeoff" placeholder="What are you giving up? What's still uncertain?" style="min-height:54px;"></textarea>
+          <div class="hint">Being honest about tradeoffs is what makes this powerful.</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeDecisionModal()">Cancel</button>
+      <button class="btn accent" id="decision-save-btn" onclick="saveDecision()">Log decision</button>
+    </div>
+  </div>
+</div>
+
+<!-- Settings modal -->
+<div class="modal-overlay" id="settings-modal" onclick="settingsOverlayClick(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Customize</h2>
+      <button class="modal-close" onclick="closeSettings()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-section">
+        <div class="modal-section-label">Work context</div>
+        <div class="mode-select">
+          <button class="mode-btn active" id="mode-freelance" onclick="setMode('freelance')">
+            <span class="mode-icon">✦</span>Freelance / solo
+          </button>
+          <button class="mode-btn" id="mode-company" onclick="setMode('company')">
+            <span class="mode-icon">⬡</span>In-house / agency
+          </button>
+        </div>
+        <div class="hint">Changes which fields and team options appear on the form.</div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-label">Form fields</div>
+        <div id="settings-toggles"></div>
+      </div>
+      <div class="modal-section" id="settings-teams-section">
+        <div class="modal-section-label">Teams &amp; stakeholders</div>
+        <div id="settings-teams"></div>
+        <div style="padding-top:12px;border-top:0.5px solid var(--border);margin-top:4px;">
+          <div style="font-size:12px;font-weight:500;color:var(--text-3);margin-bottom:8px;">Add a custom team</div>
+          <div class="add-team-row">
+            <input type="text" id="custom-team-input" placeholder="e.g. Finance, Localization..." />
+            <button class="btn sm" onclick="addCustomTeam()">Add</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeSettings()">Cancel</button>
+      <button class="btn primary" onclick="applySettings()">Apply changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- Manage Projects modal -->
+<div class="modal-overlay" id="projects-modal" onclick="projectsOverlayClick(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Manage projects</h2>
+      <button class="modal-close" onclick="closeManageProjects()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="projects-list"></div>
+      <div style="margin-top:16px; padding-top:16px; border-top:1px solid var(--border);">
+        <div style="font-size:12px;font-weight:500;color:var(--text-3);margin-bottom:10px;">New project</div>
+        <div class="field">
+          <label style="font-size:12px;">Project name</label>
+          <input type="text" id="new-proj-name" placeholder="e.g. Mobile App Redesign" style="margin-bottom:10px;" />
+        </div>
+        <div class="color-picker-label">Color (optional)</div>
+        <div class="color-picker-row" id="manage-color-picker"></div>
+        <div style="margin-top:12px;">
+          <button class="btn sm accent" onclick="createProject()">+ Create project</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeManageProjects()">Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- Archive modal -->
+<div class="modal-overlay" id="archive-modal" onclick="archiveOverlayClick(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Archived projects</h2>
+      <button class="modal-close" onclick="closeArchiveModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="archive-list"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeArchiveModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete project warning modal -->
+<div class="modal-overlay" id="delete-project-modal" onclick="deleteProjectOverlayClick(event)">
+  <div class="modal warning-modal">
+    <div class="modal-header">
+      <h2>Delete project</h2>
+      <button class="modal-close" onclick="closeDeleteProjectModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="warning-icon">⚠</div>
+      <div class="warning-title" id="delete-proj-title">Delete project?</div>
+      <div class="warning-body" id="delete-proj-body"></div>
+      <div class="warning-actions">
+        <button class="btn accent" id="delete-proj-archive-btn" onclick="archiveProjectFromWarning()">Archive instead (recommended)</button>
+        <button class="btn danger" id="delete-proj-confirm-btn" onclick="confirmDeleteProject()">Yes, delete permanently</button>
+        <button class="btn" onclick="closeDeleteProjectModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Persistence ───────────────────────────────────
+const LS_KEY = 'ddl_v9';
+
+function saveState() {
+  try {
+    localStorage.setItem(LS_KEY, JSON.stringify({
+      decisions, projects, archivedProjects, settings, mode, colorCodingEnabled, teams
+    }));
+  } catch(e) { console.warn('Could not save to localStorage', e); }
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return;
+    const s = JSON.parse(raw);
+    if (s.decisions)        decisions        = s.decisions;
+    if (s.projects)         projects         = s.projects;
+    if (s.archivedProjects) archivedProjects = s.archivedProjects;
+    if (s.settings)         settings         = { ...settings, ...s.settings };
+    if (s.mode)             mode             = s.mode;
+    if (typeof s.colorCodingEnabled === 'boolean') colorCodingEnabled = s.colorCodingEnabled;
+    if (s.teams)            teams            = s.teams;
+  } catch(e) { console.warn('Could not load from localStorage', e); }
+}
+
+// ── State ────────────────────────────────────────
+let decisions = [];
+let archivedProjects = [];
+let projects = [];
+let editingId = null;
+let formImpact = 0;
+let formTeams = new Set();
+let mode = 'freelance';
+let settings = { showAudience:true, showAlts:true, showTradeoff:true, showImpact:true, showTeams:false };
+let pendingSettings = { ...settings };
+let pendingMode = mode;
+let colorCodingEnabled = false;
+let selectedProjId = null;
+let manageColorSelection = null;
+let inlineColorSelection = null;
+
+loadState();
+
+const PROJECT_COLORS = [
+  '#5E4FD6','#E24B4A','#1A9154','#F59E0B','#0EA5E9',
+  '#EC4899','#8B5CF6','#F97316','#14B8A6','#64748B'
+];
+
+const defaultTeams = [
+  { id:'engineering', label:'Engineering', cls:'eng', active:true },
+  { id:'product', label:'Product', cls:'prod', active:true },
+  { id:'sales', label:'Sales', cls:'sales', active:true },
+  { id:'marketing', label:'Marketing', cls:'mkt', active:true },
+  { id:'legal', label:'Legal', cls:'legal', active:true },
+  { id:'content', label:'Content', cls:'content', active:false },
+  { id:'client', label:'Client', cls:'', active:false },
+  { id:'leadership', label:'Leadership', cls:'', active:false },
+];
+let teams = defaultTeams.map(t => ({ ...t }));
+
+const impactLabels = ['','Low — minor detail','Notable — visible change','Meaningful — affects flow','High — affects experience','Critical — core to product'];
+const iLabels = ['','Low','Notable','Meaningful','High','Critical'];
+const iCls = ['','i1','i2','i3','i4','i5'];
+
+function esc(s) { return s ? String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') : ''; }
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ── Projects ─────────────────────────────────────
+function getProject(id) { return projects.find(p => p.id === id); }
+
+function createProject(fromModal = true) {
+  const nameEl = document.getElementById('new-proj-name');
+  const name = nameEl ? nameEl.value.trim() : '';
+  if (!name) { showToast('Enter a project name'); return; }
+  const color = manageColorSelection || null;
+  const proj = { id: 'proj_' + Date.now(), name, color };
+  projects.push(proj);
+  if (nameEl) nameEl.value = '';
+  manageColorSelection = null;
+  renderManageColorPicker();
+  renderProjectsList();
+  showToast(`"${name}" created`);
+  saveState();
+}
+
+function deleteProject(id) {
+  const proj = projects.find(p => p.id === id);
+  if (!proj) return;
+  const count = decisions.filter(d => d.projectId === id).length;
+  if (count > 0) {
+    if (!confirm(`"${proj.name}" has ${count} decision${count!==1?'s':''}. Delete project anyway? Decisions will remain but won't be assigned to a project.`)) return;
+    decisions.forEach(d => { if (d.projectId === id) { d.projectId = null; d.project = 'Unassigned'; } });
+  }
+  projects = projects.filter(p => p.id !== id);
+  renderProjectsList();
+  renderList();
+  showToast('Project removed');
+}
+
+function updateProjectColor(id, color) {
+  const proj = projects.find(p => p.id === id);
+  if (proj) { proj.color = color; renderProjectsList(); renderList(); saveState(); }
+}
+
+let pendingDeleteProjectId = null;
+
+function deleteProject(id) {
+  const proj = projects.find(p => p.id === id);
+  if (!proj) return;
+  pendingDeleteProjectId = id;
+  const count = decisions.filter(d => d.projectId === id).length;
+  document.getElementById('delete-proj-title').textContent = `Delete "${proj.name}"?`;
+  document.getElementById('delete-proj-body').innerHTML =
+    count > 0
+      ? `This project has <strong>${count} decision${count!==1?'s':''}</strong>. Deleting it permanently removes the project — all its decisions will remain but become unassigned.<br><br>Consider archiving instead — you can view and restore archived projects at any time.`
+      : `This will permanently remove the project. This cannot be undone.<br><br>Consider archiving instead — you can restore it later.`;
+  document.getElementById('delete-project-modal').classList.add('open');
+}
+
+function closeDeleteProjectModal() {
+  document.getElementById('delete-project-modal').classList.remove('open');
+  pendingDeleteProjectId = null;
+}
+function deleteProjectOverlayClick(e) { if (e.target===document.getElementById('delete-project-modal')) closeDeleteProjectModal(); }
+
+function archiveProjectFromWarning() {
+  if (!pendingDeleteProjectId) return;
+  archiveProject(pendingDeleteProjectId);
+  closeDeleteProjectModal();
+}
+
+function confirmDeleteProject() {
+  const id = pendingDeleteProjectId;
+  if (!id) return;
+  const proj = projects.find(p => p.id === id);
+  decisions.forEach(d => { if (d.projectId === id) { d.projectId = null; d.project = 'Unassigned'; } });
+  projects = projects.filter(p => p.id !== id);
+  closeDeleteProjectModal();
+  renderProjectsList();
+  renderList();
+  showToast(`"${proj?.name}" deleted`);
+  saveState();
+}
+
+function archiveProject(id) {
+  const proj = projects.find(p => p.id === id);
+  if (!proj) return;
+  const projDecisions = decisions.filter(d => d.projectId === id);
+  archivedProjects.push({
+    ...proj,
+    decisions: projDecisions,
+    archivedAt: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
+  });
+  decisions = decisions.filter(d => d.projectId !== id);
+  projects = projects.filter(p => p.id !== id);
+  renderProjectsList();
+  renderList();
+  showToast(`"${proj.name}" archived`);
+  saveState();
+}
+
+function renameProject(id) { renderProjectsList(id); }
+
+function saveRename(id) {
+  const inp = document.getElementById('rename-input-'+id);
+  if (!inp) return;
+  const newName = inp.value.trim();
+  if (!newName) { showToast('Project name cannot be empty'); return; }
+  const proj = projects.find(p => p.id === id);
+  if (proj) {
+    proj.name = newName;
+    decisions.forEach(d => { if (d.projectId === id) d.project = newName; });
+  }
+  renderProjectsList();
+  renderList();
+  showToast('Project renamed');
+  saveState();
+}
+
+// ── Color pickers ─────────────────────────────────
+function renderColorPicker(containerId, selected, onSelect) {
+  const c = document.getElementById(containerId);
+  if (!c) return;
+  c.innerHTML = PROJECT_COLORS.map(col =>
+    `<div class="color-swatch${selected===col?' selected':''}" style="background:${col};" onclick="(${onSelect.toString()})('${col}')"></div>`
+  ).join('') + `<div class="color-swatch${!selected?' selected':''}" style="background:var(--bg-subtle);border:1.5px dashed var(--border-strong);" title="No color" onclick="(${onSelect.toString()})(null)"></div>`;
+}
+
+function renderManageColorPicker() {
+  renderColorPicker('manage-color-picker', manageColorSelection, (col) => {
+    manageColorSelection = col;
+    renderManageColorPicker();
+  });
+}
+
+function renderInlineColorPicker() {
+  renderColorPicker('inline-color-picker', inlineColorSelection, (col) => {
+    inlineColorSelection = col;
+    renderInlineColorPicker();
+  });
+}
+
+// ── Manage Projects modal ─────────────────────────
+function openManageProjects() {
+  manageColorSelection = null;
+  renderProjectsList();
+  renderManageColorPicker();
+  document.getElementById('projects-modal').classList.add('open');
+}
+function closeManageProjects() { document.getElementById('projects-modal').classList.remove('open'); }
+function projectsOverlayClick(e) { if (e.target===document.getElementById('projects-modal')) closeManageProjects(); }
+
+function renderProjectsList(editingProjId = null) {
+  const el = document.getElementById('projects-list');
+  if (!projects.length) {
+    el.innerHTML = '<div style="font-size:13px;color:var(--text-3);padding:8px 0;">No projects yet. Create one below.</div>';
+    return;
+  }
+  el.innerHTML = projects.map(p => {
+    const count = decisions.filter(d => d.projectId === p.id).length;
+    const isEditing = editingProjId === p.id;
+    return `<div class="project-manage-item">
+      <div class="project-manage-dot" style="background:${p.color||'var(--border-strong)'};" title="Change color">
+        <input type="color" class="project-color-edit" value="${p.color||'#B0B0BE'}" oninput="updateProjectColor('${p.id}', this.value)" />
+      </div>
+      ${isEditing
+        ? `<input class="project-rename-input" id="rename-input-${p.id}" value="${esc(p.name)}" onkeydown="if(event.key==='Enter')saveRename('${p.id}');if(event.key==='Escape')renderProjectsList();" />`
+        : `<span class="project-manage-name">${esc(p.name)}</span>`
+      }
+      <span class="project-manage-count">${count} decision${count!==1?'s':''}</span>
+      <div class="project-manage-actions">
+        ${isEditing
+          ? `<button class="btn sm accent" onclick="saveRename('${p.id}')">Save</button><button class="btn sm" onclick="renderProjectsList()">Cancel</button>`
+          : `<button class="btn sm ghost" onclick="renameProject('${p.id}')" title="Rename">✎</button>
+             <button class="btn sm ghost" onclick="archiveProject('${p.id}')" title="Archive project">↓ Archive</button>
+             <button class="btn sm danger" onclick="deleteProject('${p.id}')">Delete</button>`
+        }
+      </div>
+    </div>`;
+  }).join('');
+  if (editingProjId) {
+    const inp = document.getElementById('rename-input-'+editingProjId);
+    if (inp) { inp.focus(); inp.select(); }
+  }
+}
+
+// ── Project dropdown in decision modal ────────────
+function toggleProjDropdown() {
+  const menu = document.getElementById('proj-dropdown-menu');
+  const isOpen = menu.classList.contains('open');
+  if (isOpen) { menu.classList.remove('open'); return; }
+  renderProjDropdownMenu();
+  menu.classList.add('open');
+}
+
+function renderProjDropdownMenu() {
+  const menu = document.getElementById('proj-dropdown-menu');
+  const items = projects.map(p =>
+    `<div class="project-dropdown-item${selectedProjId===p.id?' active':''}" onclick="selectProject('${p.id}')">
+      <span class="dot" style="background:${p.color||'var(--border-strong)'}"></span>
+      ${esc(p.name)}
+    </div>`
+  ).join('');
+  menu.innerHTML = (items||'<div style="padding:8px 12px;font-size:12px;color:var(--text-4);">No projects yet</div>') +
+    `<div class="project-dropdown-divider"></div>
+     <div class="project-dropdown-create" onclick="showInlineNewProject()">
+       <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+       New project…
+     </div>`;
+}
+
+function selectProject(id) {
+  selectedProjId = id;
+  const proj = getProject(id);
+  document.getElementById('proj-btn-dot').style.background = proj?.color || 'var(--border-strong)';
+  document.getElementById('proj-btn-label').textContent = proj?.name || 'Select a project';
+  document.getElementById('proj-dropdown-menu').classList.remove('open');
+}
+
+function showInlineNewProject() {
+  document.getElementById('proj-dropdown-menu').classList.remove('open');
+  document.getElementById('inline-new-project-form').style.display = 'block';
+  inlineColorSelection = null;
+  renderInlineColorPicker();
+  document.getElementById('inline-proj-name').focus();
+}
+
+function cancelInlineNewProject() {
+  document.getElementById('inline-new-project-form').style.display = 'none';
+}
+
+function createInlineProject() {
+  const name = document.getElementById('inline-proj-name').value.trim();
+  if (!name) { showToast('Enter a project name'); return; }
+  const color = inlineColorSelection || null;
+  const proj = { id: 'proj_' + Date.now(), name, color };
+  projects.push(proj);
+  document.getElementById('inline-proj-name').value = '';
+  document.getElementById('inline-new-project-form').style.display = 'none';
+  selectProject(proj.id);
+  showToast(`"${name}" created`);
+  saveState();
+}
+
+// Close dropdown on outside click
+document.addEventListener('click', function(e) {
+  const wrap = document.getElementById('proj-dropdown-wrap');
+  if (wrap && !wrap.contains(e.target)) {
+    document.getElementById('proj-dropdown-menu')?.classList.remove('open');
+  }
+});
+
+// ── Color coding toggle ────────────────────────────
+function toggleColorCoding() {
+  colorCodingEnabled = !colorCodingEnabled;
+  document.getElementById('color-code-toggle').classList.toggle('active', colorCodingEnabled);
+  renderList();
+  saveState();
+}
+
+// ── Decision modal ────────────────────────────────
+function openNewDecision() {
+  editingId = null;
+  document.getElementById('decision-modal-title').textContent = 'New decision';
+  document.getElementById('decision-save-btn').textContent = 'Log decision';
+  clearDecisionForm();
+  applyFieldVisibility();
+  document.getElementById('decision-modal').classList.add('open');
+}
+
+function openEditDecision(id) {
+  const d = decisions.find(x => x.id === id);
+  if (!d) return;
+  editingId = id;
+  document.getElementById('decision-modal-title').textContent = 'Edit decision';
+  document.getElementById('decision-save-btn').textContent = 'Save changes';
+  applyFieldVisibility();
+  document.getElementById('f-decision').value = d.decision;
+  document.getElementById('f-category').value = d.category;
+  document.getElementById('f-audience').value = d.audience || '';
+  document.getElementById('f-why').value = d.why;
+  document.getElementById('f-alts').value = d.alts || '';
+  document.getElementById('f-tradeoff').value = d.tradeoff || '';
+  setFormImpact(d.impact || 0);
+  formTeams = new Set(d.teamIds || []);
+  // Restore project
+  if (d.projectId) {
+    selectedProjId = d.projectId;
+    const proj = getProject(d.projectId);
+    document.getElementById('proj-btn-dot').style.background = proj?.color || 'var(--border-strong)';
+    document.getElementById('proj-btn-label').textContent = proj?.name || 'Select a project';
+  } else {
+    selectedProjId = null;
+    document.getElementById('proj-btn-dot').style.background = 'var(--border-strong)';
+    document.getElementById('proj-btn-label').textContent = 'Select a project';
+  }
+  renderTeamPillsForm();
+  document.getElementById('decision-modal').classList.add('open');
+}
+
+function closeDecisionModal() {
+  document.getElementById('decision-modal').classList.remove('open');
+  document.getElementById('inline-new-project-form').style.display = 'none';
+  ['err-field-decision','err-field-why','err-field-impact'].forEach(clearFieldError);
+}
+
+function decisionOverlayClick(e) {
+  if (e.target === document.getElementById('decision-modal')) closeDecisionModal();
+}
+
+function clearDecisionForm() {
+  ['f-decision','f-why','f-alts','f-tradeoff','f-audience'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f-category').value = 'ux';
+  formImpact = 0; formTeams = new Set();
+  for (let i=1;i<=5;i++) document.getElementById('ip'+i).className='impact-pip';
+  document.getElementById('impact-label').textContent = 'Select a level';
+  selectedProjId = null;
+  document.getElementById('proj-btn-dot').style.background = 'var(--border-strong)';
+  document.getElementById('proj-btn-label').textContent = 'Select a project';
+  renderTeamPillsForm();
+}
+
+function clearFieldError(fieldId) {
+  const el = document.getElementById(fieldId);
+  if (el) { el.classList.remove('field-error'); const em = el.querySelector('.error-msg'); if(em) em.remove(); }
+}
+
+function showFieldError(fieldId, msg) {
+  const el = document.getElementById(fieldId);
+  if (!el) return;
+  el.classList.add('field-error');
+  if (!el.querySelector('.error-msg')) {
+    const em = document.createElement('div');
+    em.className = 'error-msg'; em.textContent = msg;
+    el.appendChild(em);
+  }
+}
+
+function saveDecision() {
+  const dec = document.getElementById('f-decision').value.trim();
+  const why = document.getElementById('f-why').value.trim();
+  let valid = true;
+
+  clearFieldError('err-field-decision');
+  clearFieldError('err-field-why');
+  clearFieldError('err-field-impact');
+
+  if (!dec) { showFieldError('err-field-decision', 'Please describe what you decided.'); valid = false; }
+  if (!why) { showFieldError('err-field-why', 'Please explain why you made this decision.'); valid = false; }
+  if (settings.showImpact && formImpact === 0) { showFieldError('err-field-impact', 'Please rate the impact of this decision.'); valid = false; }
+
+  if (!valid) {
+    // Scroll to first error
+    const firstErr = document.querySelector('#decision-modal .field-error');
+    if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  const proj = selectedProjId ? getProject(selectedProjId) : null;
+  const projectName = proj ? proj.name : 'Unassigned';
+  const teamLabels = [...formTeams].map(id => teams.find(t=>t.id===id)?.label || id);
+
+  if (editingId !== null) {
+    const idx = decisions.findIndex(d => d.id === editingId);
+    if (idx > -1) {
+      decisions[idx] = { ...decisions[idx],
+        decision: dec,
+        projectId: selectedProjId,
+        project: projectName,
+        category: document.getElementById('f-category').value,
+        audience: document.getElementById('f-audience').value.trim(),
+        why,
+        alts: document.getElementById('f-alts').value.trim(),
+        tradeoff: document.getElementById('f-tradeoff').value.trim(),
+        impact: formImpact,
+        teamIds: [...formTeams],
+        teams: teamLabels,
+        editedAt: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})
+      };
+    }
+    showToast('Decision updated');
+  } else {
+    decisions.push({
+      id: Date.now(),
+      decision: dec,
+      projectId: selectedProjId,
+      project: projectName,
+      category: document.getElementById('f-category').value,
+      audience: document.getElementById('f-audience').value.trim(),
+      why,
+      alts: document.getElementById('f-alts').value.trim(),
+      tradeoff: document.getElementById('f-tradeoff').value.trim(),
+      impact: formImpact,
+      teamIds: [...formTeams],
+      teams: teamLabels,
+      clientInformed: false,
+      ts: Date.now(),
+      date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})
+    });
+    showToast('Decision logged');
+  }
+
+  closeDecisionModal();
+  updateTabCount();
+  renderList();
+  saveState();
+}
+
+function setFormImpact(n) {
+  formImpact = n;
+  for (let i=1;i<=5;i++) document.getElementById('ip'+i).className='impact-pip'+(i<=n?' sel-'+i:'');
+  document.getElementById('impact-label').textContent = n ? impactLabels[n] : 'Select a level';
+  if (n > 0) clearFieldError('err-field-impact');
+}
+function setImpact(n) { setFormImpact(n); }
+
+function renderTeamPillsForm() {
+  const c = document.getElementById('team-pills-form');
+  c.innerHTML = teams.filter(t=>t.active).map(t =>
+    `<div class="pill ${formTeams.has(t.id)?'active '+t.cls:''}" onclick="toggleTeamForm('${t.id}')">${esc(t.label)}</div>`
+  ).join('');
+}
+
+function toggleTeamForm(id) {
+  if (formTeams.has(id)) formTeams.delete(id); else formTeams.add(id);
+  renderTeamPillsForm();
+}
+
+function applyFieldVisibility() {
+  document.getElementById('field-audience').style.display = settings.showAudience ? '' : 'none';
+  document.getElementById('field-alts').style.display = settings.showAlts ? '' : 'none';
+  document.getElementById('field-tradeoff').style.display = settings.showTradeoff ? '' : 'none';
+  document.getElementById('field-impact-section').style.display = settings.showImpact ? '' : 'none';
+  document.getElementById('field-teams-section').style.display = settings.showTeams ? '' : 'none';
+}
+
+// ── Settings modal ────────────────────────────────
+function openSettings() {
+  pendingSettings = { ...settings };
+  pendingMode = mode;
+  renderSettingsModal();
+  document.getElementById('settings-modal').classList.add('open');
+}
+function closeSettings() { document.getElementById('settings-modal').classList.remove('open'); }
+function settingsOverlayClick(e) { if (e.target===document.getElementById('settings-modal')) closeSettings(); }
+
+function applySettings() {
+  settings = { ...pendingSettings };
+  mode = pendingMode;
+  closeSettings();
+  renderList();
+  showToast('Changes applied');
+  saveState();
+}
+
+function setMode(m) {
+  pendingMode = m;
+  if (m==='freelance') pendingSettings.showTeams = false;
+  else pendingSettings.showTeams = true;
+  document.getElementById('mode-freelance').classList.toggle('active', m==='freelance');
+  document.getElementById('mode-company').classList.toggle('active', m==='company');
+  renderSettingsModal();
+}
+
+function renderSettingsModal() {
+  document.getElementById('mode-freelance').classList.toggle('active', pendingMode==='freelance');
+  document.getElementById('mode-company').classList.toggle('active', pendingMode==='company');
+  const fields = [
+    { key:'showAudience', label:'Audience field', sub:'Who this decision is designed for' },
+    { key:'showAlts', label:'Alternatives considered', sub:'What else you tried or considered' },
+    { key:'showTradeoff', label:'Tradeoff / open question', sub:'What you\'re giving up or uncertain about' },
+    { key:'showImpact', label:'Impact rating', sub:'5-point scale for decision significance' },
+    { key:'showTeams', label:'Teams to loop in', sub:'Stakeholder awareness pills' },
+  ];
+  document.getElementById('settings-toggles').innerHTML = fields.map(f => `
+    <div class="settings-toggle">
+      <div><label>${f.label}</label><div class="sub">${f.sub}</div></div>
+      <label class="toggle">
+        <input type="checkbox" ${pendingSettings[f.key]?'checked':''} onchange="pendingSettings['${f.key}']=this.checked; if('${f.key}'==='showTeams') renderSettingsModal();" />
+        <div class="toggle-track"></div><div class="toggle-thumb"></div>
+      </label>
+    </div>`).join('');
+
+  document.getElementById('settings-teams-section').style.display = pendingSettings.showTeams ? '' : 'none';
+  document.getElementById('settings-teams').innerHTML = teams.map((t,i) => `
+    <div class="team-manage-row">
+      <div class="team-manage-left">
+        <label class="toggle">
+          <input type="checkbox" ${t.active?'checked':''} onchange="teams[${i}].active=this.checked; if(!this.checked) formTeams.delete(teams[${i}].id); renderTeamPillsForm();" />
+          <div class="toggle-track"></div><div class="toggle-thumb"></div>
+        </label>
+        ${t.custom
+          ? `<input class="team-name-input" type="text" value="${esc(t.label)}" onchange="teams[${i}].label=this.value.trim()||teams[${i}].label; renderTeamPillsForm();" /><span class="custom-tag">custom</span>`
+          : `<span style="font-size:14px;color:var(--text);">${esc(t.label)}</span>`}
+      </div>
+      ${t.custom?`<button class="btn danger sm" onclick="removeCustomTeam(${i})">Remove</button>`:''}
+    </div>`).join('');
+}
+
+function addCustomTeam() {
+  const inp = document.getElementById('custom-team-input');
+  const label = inp.value.trim();
+  if (!label) return;
+  teams.push({ id:'custom_'+Date.now(), label, cls:'', active:true, custom:true });
+  inp.value='';
+  renderSettingsModal(); renderTeamPillsForm();
+}
+
+function removeCustomTeam(i) {
+  formTeams.delete(teams[i].id);
+  teams.splice(i,1);
+  renderSettingsModal(); renderTeamPillsForm();
+}
+
+// ── List rendering ────────────────────────────────
+function updateTabCount() {
+  const el = document.getElementById('decision-count-label');
+  if (el) el.textContent = decisions.length ? `${decisions.length} decision${decisions.length!==1?'s':''}` : 'No decisions yet';
+}
+
+function renderSummary() {
+  const sec = document.getElementById('summary-section');
+  if (!decisions.length) { sec.innerHTML=''; return; }
+  const total=decisions.length, informed=decisions.filter(d=>d.clientInformed).length;
+  const pct=Math.round((informed/total)*100);
+  const wi=decisions.filter(d=>d.impact);
+  const avg=wi.length?(wi.reduce((s,d)=>s+d.impact,0)/wi.length).toFixed(1):'—';
+  const hi=decisions.filter(d=>d.impact>=4).length;
+  sec.innerHTML=`
+    <div class="summary-grid">
+      <div class="stat-card"><div class="stat-label">Total decisions</div><div class="stat-value">${total}</div></div>
+      <div class="stat-card"><div class="stat-label">Client informed</div><div class="stat-value">${informed}</div><div class="stat-sub">of ${total}</div></div>
+      <div class="stat-card"><div class="stat-label">Avg impact</div><div class="stat-value">${avg}</div><div class="stat-sub">out of 5</div></div>
+      <div class="stat-card"><div class="stat-label">High / critical</div><div class="stat-value">${hi}</div><div class="stat-sub">impact 4–5</div></div>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-label"><span>Client communication</span><span>${informed} of ${total} communicated (${pct}%)</span></div>
+      <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+    </div>`;
+}
+
+function getFiltered() {
+  const q=(document.getElementById('search-input').value||'').toLowerCase();
+  const sort=document.getElementById('filter-sort').value;
+  const inf=document.getElementById('filter-informed').value;
+  let list=[...decisions];
+  if (q) list=list.filter(d=>d.decision.toLowerCase().includes(q)||d.why.toLowerCase().includes(q));
+  if (inf==='yes') list=list.filter(d=>d.clientInformed);
+  if (inf==='no') list=list.filter(d=>!d.clientInformed);
+  if (sort==='newest') list.sort((a,b)=>b.ts-a.ts);
+  else if (sort==='oldest') list.sort((a,b)=>a.ts-b.ts);
+  else if (sort==='impact-high') list.sort((a,b)=>b.impact-a.impact);
+  else if (sort==='impact-low') list.sort((a,b)=>a.impact-b.impact);
+  else list.sort((a,b)=>(a.project||'').localeCompare(b.project||''));
+  return list;
+}
+
+function getProjectColor(d) {
+  if (!colorCodingEnabled) return null;
+  const proj = d.projectId ? getProject(d.projectId) : null;
+  return proj?.color || null;
+}
+
+function renderDecisionCard(d) {
+  const hasDetails = (d.alts && settings.showAlts) || (d.tradeoff && settings.showTradeoff);
+  const detailHtml = [
+    d.alts && settings.showAlts ? `<div class="di-row" style="margin-top:4px;"><strong>Considered </strong>${esc(d.alts)}</div>` : '',
+    d.tradeoff && settings.showTradeoff ? `<div class="di-row" style="margin-top:4px;"><strong>Tradeoff </strong>${esc(d.tradeoff)}</div>` : ''
+  ].join('');
+
+  const projColor = getProjectColor(d);
+  const proj = d.projectId ? getProject(d.projectId) : null;
+  const pillDotColor = proj?.color || 'var(--border-strong)';
+
+  const cardStyle = projColor
+    ? `border-left-color:${projColor};border-left-width:3px;padding-left:13px;`
+    : '';
+
+  return `<div class="decision-item" style="${cardStyle}">
+    <div class="di-project-pill">
+      <span class="pill-dot" style="background:${pillDotColor};"></span>
+      ${esc(d.project || 'Unassigned')}
+    </div>
+    <div class="di-top">
+      <div class="di-title">${esc(d.decision)}</div>
+      <div class="di-badges">
+        ${d.impact?`<span class="impact-dot ${iCls[d.impact]}">${iLabels[d.impact]}</span>`:''}
+        <span class="badge ${d.category}">${d.category}</span>
+      </div>
+    </div>
+    ${d.audience&&settings.showAudience?`<div class="di-row" style="margin-bottom:5px;"><strong>For </strong>${esc(d.audience)}</div>`:''}
+    <div class="di-row">${esc(d.why)}</div>
+    ${hasDetails ? `
+      <button class="di-detail-toggle" id="toggle-${d.id}" onclick="toggleDetails(${d.id})">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Show more
+      </button>
+      <div class="di-details" id="details-${d.id}">${detailHtml}</div>
+    ` : ''}
+    ${d.teams&&d.teams.length&&settings.showTeams?`<div class="di-teams">${d.teams.map(t=>`<span class="di-team-pill">${esc(t)}</span>`).join('')}</div>`:''}
+    <div class="di-footer">
+      <span class="di-date">${d.date}${d.editedAt?`<span class="edited-tag"> · edited ${d.editedAt}</span>`:''}</span>
+      <div class="di-footer-right">
+        <div class="client-check ${d.clientInformed?'informed':''}" onclick="toggleInformed(${d.id})">
+          <span class="checkmark">${d.clientInformed?'✓':''}</span>
+          ${d.clientInformed?'Client informed':'Mark client informed'}
+        </div>
+        <button class="btn ghost sm" onclick="openEditDecision(${d.id})">Edit</button>
+        <button class="btn danger sm" onclick="deleteDecision(${d.id})">Remove</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderList() {
+  renderSummary();
+  const list = getFiltered();
+  const container = document.getElementById('decisions-list');
+  const label = document.getElementById('decision-count-label');
+  const bar = document.getElementById('export-bar');
+
+  if (!decisions.length) {
+    container.innerHTML=`<div class="empty">No decisions logged yet.<div class="empty-cta"><button class="btn accent" onclick="openNewDecision()">+ Log your first decision</button></div></div>`;
+    label.textContent='No decisions yet'; bar.style.display='none'; return;
+  }
+  label.textContent=list.length===decisions.length?`${decisions.length} decision${decisions.length!==1?'s':''}`:`${list.length} of ${decisions.length} shown`;
+  bar.style.display='flex';
+
+  if (!list.length) { container.innerHTML='<div class="empty">No decisions match your filters.</div>'; return; }
+
+  const sort = document.getElementById('filter-sort').value;
+  if (sort === 'project') {
+    const groups = {};
+    list.forEach(d => {
+      const key = d.project || 'Unassigned';
+      if (!groups[key]) groups[key] = { proj: getProject(d.projectId), items: [] };
+      groups[key].items.push(d);
+    });
+    container.innerHTML = Object.keys(groups).sort().map(projName => {
+      const grp = groups[projName];
+      const color = (colorCodingEnabled && grp.proj?.color) ? grp.proj.color : null;
+      const swatchHtml = color
+        ? `<span class="group-color-swatch" style="background:${color};"></span>`
+        : '';
+      return `<div class="project-group-header">
+        <span class="group-header-left">${swatchHtml}<span>${esc(projName)}</span></span>
+        <span class="project-group-count">${grp.items.length} decision${grp.items.length!==1?'s':''}</span>
+      </div>
+      ${grp.items.map(renderDecisionCard).join('')}`;
+    }).join('');
+  } else {
+    container.innerHTML = list.map(renderDecisionCard).join('');
+  }
+}
+
+function toggleInformed(id) {
+  const d = decisions.find(d => d.id === id);
+  if (d) { d.clientInformed = !d.clientInformed; renderList(); saveState(); }
+}
+
+function deleteDecision(id) {
+  decisions = decisions.filter(d => d.id !== id);
+  updateTabCount(); renderList(); saveState();
+}
+
+function toggleDetails(id) {
+  const btn = document.getElementById('toggle-'+id);
+  const panel = document.getElementById('details-'+id);
+  if (!btn || !panel) return;
+  const isOpen = panel.classList.contains('open');
+  panel.classList.toggle('open', !isOpen);
+  btn.classList.toggle('open', !isOpen);
+  btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>${isOpen ? 'Show more' : 'Show less'}`;
+}
+
+// ── Archive modal ──────────────────────────────────
+function openArchiveModal() {
+  renderArchiveList();
+  document.getElementById('archive-modal').classList.add('open');
+}
+function closeArchiveModal() { document.getElementById('archive-modal').classList.remove('open'); }
+function archiveOverlayClick(e) { if (e.target===document.getElementById('archive-modal')) closeArchiveModal(); }
+
+function toggleArchiveDecisions(id) {
+  const panel = document.getElementById('archive-decisions-'+id);
+  const btn = document.getElementById('archive-toggle-btn-'+id);
+  if (!panel) return;
+  const isOpen = panel.classList.contains('open');
+  panel.classList.toggle('open', !isOpen);
+  if (btn) btn.textContent = isOpen ? `▸ View decisions` : `▾ Hide decisions`;
+}
+
+function renderArchiveList() {
+  const el = document.getElementById('archive-list');
+  if (!archivedProjects.length) {
+    el.innerHTML = '<div class="archive-empty">No archived projects yet.</div>';
+    return;
+  }
+  el.innerHTML = [...archivedProjects].reverse().map(p => {
+    const decisionRows = p.decisions.map((d, i) =>
+      `<div class="archive-decision-row">
+        <span class="archive-decision-num">${i+1}.</span>
+        <span>${esc(d.decision)}${d.impact ? ` <span style="font-size:11px;color:var(--text-4);">· ${iLabels[d.impact]}</span>` : ''}</span>
+      </div>`
+    ).join('');
+    return `<div class="archive-item">
+      <div class="archive-item-header">
+        <div class="archive-item-dot" style="background:${p.color||'var(--border-strong)'}; border-radius:3px;"></div>
+        <div class="archive-item-name">${esc(p.name)}</div>
+      </div>
+      <div class="archive-item-meta">${p.decisions.length} decision${p.decisions.length!==1?'s':''} · archived ${p.archivedAt}</div>
+      ${p.decisions.length > 0 ? `
+        <button class="archive-toggle-decisions" id="archive-toggle-btn-${p.id}" onclick="toggleArchiveDecisions('${p.id}')">▸ View decisions</button>
+        <div class="archive-item-decisions" id="archive-decisions-${p.id}">${decisionRows}</div>
+      ` : ''}
+      <div class="archive-item-actions">
+        <button class="btn sm" onclick="restoreProject('${p.id}')">Unarchive</button>
+        <button class="btn sm danger" onclick="deleteArchivedProject('${p.id}')">Delete permanently</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function restoreProject(id) {
+  const proj = archivedProjects.find(p => p.id === id);
+  if (!proj) return;
+  // Restore the project itself
+  projects.push({ id: proj.id, name: proj.name, color: proj.color });
+  // Restore decisions
+  decisions = [...decisions, ...proj.decisions];
+  archivedProjects = archivedProjects.filter(p => p.id !== id);
+  renderArchiveList();
+  renderList();
+  showToast(`"${proj.name}" unarchived`);
+  saveState();
+}
+
+function deleteArchivedProject(id) {
+  const proj = archivedProjects.find(p => p.id === id);
+  if (!proj) return;
+  if (!confirm(`Permanently delete "${proj.name}" and its ${proj.decisions.length} decision${proj.decisions.length!==1?'s':''}? This cannot be undone.`)) return;
+  archivedProjects = archivedProjects.filter(p => p.id !== id);
+  renderArchiveList();
+  showToast('Project deleted permanently');
+  saveState();
+}
+
+// ── Export ─────────────────────────────────────────
+function toMarkdown() {
+  const date = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  const informed = decisions.filter(d => d.clientInformed).length;
+  let md = `# Design decision log\n**Date:** ${date}  \n**Client communication:** ${informed} of ${decisions.length} communicated\n\n---\n\n`;
+  decisions.forEach((d,i) => {
+    md += `## ${i+1}. ${d.decision}\n`;
+    md += `**Project:** ${d.project || 'Unassigned'}  **Category:** ${d.category}`;
+    if (d.impact) md += `  **Impact:** ${iLabels[d.impact]} (${d.impact}/5)`;
+    if (d.audience) md += `  **For:** ${d.audience}`;
+    md += '\n\n**Why:** ' + d.why + '\n\n';
+    if (d.alts) md += `**Alternatives considered:** ${d.alts}\n\n`;
+    if (d.tradeoff) md += `**Tradeoff:** ${d.tradeoff}\n\n`;
+    if (d.teams && d.teams.length) md += `**Teams:** ${d.teams.join(', ')}\n\n`;
+    md += `**Client informed:** ${d.clientInformed?'Yes':'No'}\n\n---\n\n`;
+  });
+  return md;
+}
+
+function copyMarkdown() { navigator.clipboard.writeText(toMarkdown()).then(() => showToast('Copied to clipboard')); }
+
+function exportDoc() {
+  const blob = new Blob([toMarkdown()], {type:'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'design-decision-log.txt';
+  a.click();
+}
+
+// ── Init ───────────────────────────────────────────
+pendingSettings = { ...settings };
+pendingMode = mode;
+document.getElementById('color-code-toggle').classList.toggle('active', colorCodingEnabled);
+renderList();
+</script>
